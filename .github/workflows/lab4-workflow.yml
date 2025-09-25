@@ -1,11 +1,32 @@
 name: Publish Package to GitHub NPM Registry
 
 on: 
-  ????: 
+  release: 
+    types: published
     
 jobs:
     npm-package:
       runs-on: ubuntu-latest
+      permissions: 
+        packages: write
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
+
+        - name: Setup Node 20.x
+          uses: actions/setup-node@v4
+          with:
+            node-version: '20.x'
+            registry-url: 'https://npm.pkg.github.com/'
+
+        # - name: GHCR Login
+        #   uses: docker/login-action@v3
+        #   with: 
+        #     registry: ghcr.io
+        #     username: ${{ github.actor}}
+        #     password: ${{ secrets.GITHUB_TOKEN}}
+
+        - name: Install dependencies
+          run: npm install
+
+
